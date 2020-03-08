@@ -78,9 +78,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/view"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_120"
+            android:layout_marginTop="@dimen/dp_50"
             android:textColor="#31abd3"
-            android:textSize="50sp" />
+            android:textSize="@dimen/sp_30" />
 
 
         <TextView
@@ -90,14 +90,39 @@
             android:layout_alignParentBottom="true"
             android:layout_width="@dimen/dp_120"
             android:layout_height="@dimen/dp_50" />
+
+
+
+        <Button
+            android:id="@+id/log"
+            android:layout_marginBottom="100dp"
+            android:layout_alignParentBottom="true"
+            android:text="上报log"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+        <Button
+            android:id="@+id/qushi_query_state"
+            android:layout_marginBottom="140dp"
+            android:layout_alignParentBottom="true"
+            android:text="点击查询当前是否有人"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+        <Button
+            android:id="@+id/qushi_query_state1"
+            android:layout_marginBottom="180dp"
+            android:layout_alignParentBottom="true"
+            android:text="监听点击查询当前是否有人"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_95"
+        android:layout_height="@dimen/dp_60"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/dp_12"
-        android:layout_marginBottom="@dimen/dp_19"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
         android:orientation="horizontal">
 
 
@@ -151,7 +176,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:orientation="horizontal">
 
         <include

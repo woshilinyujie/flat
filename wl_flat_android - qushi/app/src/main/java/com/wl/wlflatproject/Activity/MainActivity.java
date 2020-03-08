@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -40,6 +41,7 @@ import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
+import com.qtimes.service.wonly.client.QtimesServiceManager;
 import com.wl.wlflatproject.Bean.CalendarParam;
 import com.wl.wlflatproject.Bean.GDFutureWeatherBean;
 import com.wl.wlflatproject.Bean.GDNowWeatherBean;
@@ -147,6 +149,14 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     TextView secondWeatherTv;
     @BindView(R.id.third_weather_tv)
     TextView thirdWeatherTv;
+    @BindView(R.id.qushi_query_state)
+    Button qushiQueryState;
+    @BindView(R.id.today_temp_ll)
+    LinearLayout todayTempLl;
+    @BindView(R.id.log)
+    Button log;
+    @BindView(R.id.qushi_query_state1)
+    Button qushiQueryState1;
     private int version;
     /* 更新进度条 */
     private ProgressBar mProgress;
@@ -241,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void initData() {
+        QtimesServiceManager.instance().connect(this);
         EventBus.getDefault().register(this);
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
@@ -277,15 +288,51 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         handler.sendEmptyMessageDelayed(2, 24 * 60 * 60 * 1000);
         handler.sendEmptyMessageDelayed(3, 1000 * 3 * 60);
         handler.sendEmptyMessage(4);
+        QtimesServiceManager.instance().setListener(new QtimesServiceManager.QtimesDoorServiceListener() {
+            @Override
+            public void onPersonNumberChange(int i, int i1) {
+
+            }
+
+            @Override
+            public void onPersonExistChange(boolean b) {
+                if (b) {
+                    qushiQueryState1.setText("监听回调当前是否有有人------->yes");
+                } else {
+                    qushiQueryState1.setText("监听回调当前是否有有人------->no");
+                }
+            }
+
+            @Override
+            public void onServiceConnect() {
+
+            }
+
+            @Override
+            public void onServiceDisconnect() {
+
+            }
+        });
     }
 
     @OnClick({R.id.swtich, R.id.changkai, R.id.setting, R.id.video_switch, R.id.lock_bt, R.id.onoff_bt,
             R.id.bufang_bt, R.id.code_bt, R.id.fun_view,
-            R.id.weather_ll, R.id.calendar_ll, R.id.video_iv})
+            R.id.weather_ll, R.id.calendar_ll, R.id.video_iv, R.id.qushi_query_state, R.id.log})
     public void onViewClicked(View view) {
         handler.removeMessages(3);
         handler.sendEmptyMessageDelayed(3, 1000 * 3 * 60);
         switch (view.getId()) {
+            case R.id.log:
+                QtimesServiceManager.instance().uploadLog();
+                break;
+            case R.id.qushi_query_state:
+                boolean b = QtimesServiceManager.instance().queryPersonExist();
+                if (b) {
+                    qushiQueryState.setText("点击当前是否有有人------->yes");
+                } else {
+                    qushiQueryState.setText("点击当前是否有有人------->no");
+                }
+                break;
             case R.id.setting:
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 intent.putExtra("openDegree", openDegree);
